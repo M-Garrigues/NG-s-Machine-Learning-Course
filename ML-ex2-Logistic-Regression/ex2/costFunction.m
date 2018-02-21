@@ -19,9 +19,22 @@ grad = zeros(size(theta));
 %
 % Note: grad should have the same dimensions as theta
 %
+z = X * theta;
+h = sigmoid(z);
+
+%disp(h);
+
+%The basic cost function for logistic regression
+%J = (-1/m) * (y'*log(h) + (1 - y')*(log(1 - h)));
+
+%A more cost efficient condensed way to calculate cost.
+J = (-1/m) * (y' * (z) - sum(log(1 + exp(z))));
 
 
+% Gradient calculation, to give as input to fminunc
+alpha = 1;
 
+grad = - (alpha / m) * X' * (y - h);
 
 
 
