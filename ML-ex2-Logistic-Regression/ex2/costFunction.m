@@ -32,9 +32,8 @@ J = (-1/m) * (y' * (z) - sum(log(1 + exp(z))));
 
 
 % Gradient calculation, to give as input to fminunc
-alpha = 1;
 
-grad = - (alpha / m) * X' * (y - h);
+grad = - (1 / m) * X' * (y - h);
 
 
 

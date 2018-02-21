@@ -22,8 +22,6 @@ grad = zeros(size(theta));
 z = X * theta;
 h = sigmoid(z);
 
-lambda = 10;
-alpha = 1;
 
 
 % COST FUNCTION ======
@@ -36,12 +34,12 @@ J = (-1/m) * (y'*log(h) + (1 - y')*(log(1 - h))) + (lambda / (2*m)) * tSumm ;
 
 % GRADIENT ===========
 
-grad(1) =  (alpha / m) * X(:,1)' * (sigmoid(X(:,1) * theta(1)) - y);
+grad(1) =  (1 / m) * X(:,1)' * (sigmoid(X * theta) - y);
 
 
 s = size(theta);
 
-grad(2:s) =  (alpha / m) * X(:,2:s)' * (sigmoid(X(:,2:s) * theta(2:s)) - y) + (lambda/m) * theta(2:s);
+grad(2:s) =  (1 / m) * X(:,2:s)' * (sigmoid(X * theta) - y) + (lambda/m) * theta(2:s);
 
 
 
