@@ -25,10 +25,6 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
 % Setup some useful variables
 m = size(X, 1);
          
-% You need to return the following variables correctly 
-J = 0;
-Theta1_grad = zeros(size(Theta1));
-Theta2_grad = zeros(size(Theta2));
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
@@ -79,60 +75,44 @@ D2 = zeros(size(row(1,:)));
 D1 = zeros(size(X(1,:)));
 
 
+
 for t = 1:m
     
     %step 1
     
     a1 = X(t,:);       
-    z2 = [1 a1 * Theta1'];
-    a2 = sigmoid(z2);
+    z2 = a1 * Theta1';
+    a2 = [1 sigmoid(z2)];
     z3 = a2 * Theta2';
     a3 = sigmoid(z3);
     
     %step 2
     
     d3 = (a3 - Y(t,:));
-        
-    
     %step 3
         
-    d2 = (d3 * Theta2) .* sigmoidGradient(z2);
-    
+    d2 = (d3 * Theta2(:,2:end) .* sigmoidGradient(z2)); 
 
+    %we skip the weights of the bias, ase they're not related to 1st layer activation error.
+    
+    
     %step 4
     
     D2 = D2 + d3'*a2;
     D1 = D1 + d2'*a1;
     
 
-    
-    % Part 3: Implement regularization with the cost function and gradients.
-%
-%         Hint: You can implement this around the code for
-%               backpropagation. That is, you can compute the gradients for
-%               the regularization separately and then add them to Theta1_grad
-%               and Theta2_grad from Part 2.
-%
+end
 
+Theta1_grad = D1./m;
+Theta2_grad = D2./m;
 
+reg1 = (lambda/m) * Theta1(:,2:end);
+reg2 = (lambda/m) * Theta2(:,2:end);
 
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + reg1;
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + reg2;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% -------------------------------------------------------------
 
 % =========================================================================
 
